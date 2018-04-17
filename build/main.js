@@ -22,27 +22,43 @@ webpackEmptyAsyncContext.id = 123;
 
 var map = {
 	"../pages/account/account.module": [
-		331,
-		15
+		330,
+		40
 	],
 	"../pages/chat-messages/chat-messages.module": [
-		330,
-		14
+		331,
+		39
 	],
 	"../pages/chat/chat.module": [
 		332,
-		13
+		36
 	],
 	"../pages/check-email/check-email.module": [
 		333,
-		12
+		35
 	],
 	"../pages/forgot-password/forgot-password.module": [
-		335,
+		334,
+		15
+	],
+	"../pages/group-account/group-account.module": [
+		366,
+		14
+	],
+	"../pages/group-items/group-items.module": [
+		362,
+		13
+	],
+	"../pages/group-members/group-members.module": [
+		364,
+		12
+	],
+	"../pages/group-payment/group-payment.module": [
+		368,
 		11
 	],
 	"../pages/group/group.module": [
-		334,
+		335,
 		10
 	],
 	"../pages/login/login.module": [
@@ -62,19 +78,19 @@ var map = {
 		6
 	],
 	"../pages/payment/payment.module": [
-		342,
+		340,
 		5
 	],
 	"../pages/profile/profile.module": [
-		340,
+		341,
 		4
 	],
 	"../pages/request-details/request-details.module": [
-		341,
+		342,
 		3
 	],
 	"../pages/request/request.module": [
-		345,
+		343,
 		2
 	],
 	"../pages/signup/signup.module": [
@@ -82,7 +98,7 @@ var map = {
 		1
 	],
 	"../pages/tabs/tabs.module": [
-		343,
+		345,
 		0
 	]
 };
@@ -226,11 +242,26 @@ var ApiProvider = /** @class */ (function () {
         params = params.set('token', this.token);
         return this.http.get(url, { params: params });
     };
+    ApiProvider.prototype.getGroups = function () {
+        var url = __WEBPACK_IMPORTED_MODULE_2__config__["b" /* serverUrl */] + 'groups';
+        var params = new __WEBPACK_IMPORTED_MODULE_0__angular_common_http__["c" /* HttpParams */]();
+        params = params.set('token', this.token);
+        return this.http.get(url, { params: params });
+    };
+    ApiProvider.prototype.getGroupMembers = function (data) {
+        var url = __WEBPACK_IMPORTED_MODULE_2__config__["b" /* serverUrl */] + 'group/members/info';
+        var params = new __WEBPACK_IMPORTED_MODULE_0__angular_common_http__["c" /* HttpParams */]();
+        params = params.set('token', this.token);
+        params = params.set('group_id', data.group_id);
+        params = params.set('user_id', data.user_id);
+        return this.http.get(url, { params: params });
+    };
     ApiProvider = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["A" /* Injectable */])(),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__angular_common_http__["a" /* HttpClient */]])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_common_http__["a" /* HttpClient */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_common_http__["a" /* HttpClient */]) === "function" && _a || Object])
     ], ApiProvider);
     return ApiProvider;
+    var _a;
 }());
 
 //# sourceMappingURL=api.js.map
@@ -249,6 +280,7 @@ var ApiProvider = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_sha512__ = __webpack_require__(298);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_sha512___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_sha512__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__config__ = __webpack_require__(85);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__loading_loading__ = __webpack_require__(222);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -263,9 +295,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var AuthProvider = /** @class */ (function () {
-    function AuthProvider(http) {
+    function AuthProvider(http, loading) {
         this.http = http;
+        this.loading = loading;
         this.isLoggedIn = new __WEBPACK_IMPORTED_MODULE_2_rxjs_Subject__["Subject"]();
     }
     AuthProvider.prototype.logout = function () {
@@ -278,6 +312,11 @@ var AuthProvider = /** @class */ (function () {
         return new Promise(function (resolve, reject) {
             if (localStorage.getItem('token') && localStorage.getItem('email')) {
                 _this.isLoggedIn.next(true);
+                _this.loading.show('getUser');
+                _this.getUser().subscribe(function (res) {
+                    _this.user = res.data[0];
+                    _this.loading.dismiss('getUser');
+                });
                 resolve(true);
             }
             else {
@@ -309,11 +348,18 @@ var AuthProvider = /** @class */ (function () {
         params = params.set('validation_code', data.validation_code);
         return this.http.get(url, { params: params });
     };
+    AuthProvider.prototype.getUser = function () {
+        var url = __WEBPACK_IMPORTED_MODULE_4__config__["b" /* serverUrl */] + 'user';
+        var params = new __WEBPACK_IMPORTED_MODULE_0__angular_common_http__["c" /* HttpParams */]();
+        params = params.set('token', localStorage.getItem('token'));
+        return this.http.get(url, { params: params });
+    };
     AuthProvider = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["A" /* Injectable */])(),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__angular_common_http__["a" /* HttpClient */]])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_common_http__["a" /* HttpClient */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_common_http__["a" /* HttpClient */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_5__loading_loading__["a" /* LoadingProvider */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5__loading_loading__["a" /* LoadingProvider */]) === "function" && _b || Object])
     ], AuthProvider);
     return AuthProvider;
+    var _a, _b;
 }());
 
 //# sourceMappingURL=auth.js.map
@@ -434,22 +480,26 @@ var AppModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_1__angular_platform_browser__["a" /* BrowserModule */],
                 __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["d" /* IonicModule */].forRoot(__WEBPACK_IMPORTED_MODULE_3__app_component__["a" /* MyApp */], {}, {
                     links: [
-                        { loadChildren: '../pages/chat-messages/chat-messages.module#ChatMessagesPageModule', name: 'ChatMessagesPage', segment: 'chat-messages', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/account/account.module#AccountPageModule', name: 'AccountPage', segment: 'account', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/chat-messages/chat-messages.module#ChatMessagesPageModule', name: 'ChatMessagesPage', segment: 'chat-messages', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/chat/chat.module#ChatPageModule', name: 'ChatPage', segment: 'chat', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/check-email/check-email.module#CheckEmailPageModule', name: 'CheckEmailPage', segment: 'check-email', priority: 'low', defaultHistory: [] },
-                        { loadChildren: '../pages/group/group.module#GroupPageModule', name: 'GroupPage', segment: 'group', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/forgot-password/forgot-password.module#ForgotPasswordPageModule', name: 'ForgotPasswordPage', segment: 'forgot-password', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/group/group.module#GroupPageModule', name: 'GroupPage', segment: 'group', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/login/login.module#LoginPageModule', name: 'LoginPage', segment: 'login', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/menu/menu.module#MenuPageModule', name: 'MenuPage', segment: 'menu', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/payment-details/payment-details.module#PaymentDetailsPageModule', name: 'PaymentDetailsPage', segment: 'payment-details', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/payment-request/payment-request.module#PaymentRequestPageModule', name: 'PaymentRequestPage', segment: 'payment-request', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/payment/payment.module#PaymentPageModule', name: 'PaymentPage', segment: 'payment', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/profile/profile.module#ProfilePageModule', name: 'ProfilePage', segment: 'profile', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/request-details/request-details.module#RequestDetailsPageModule', name: 'RequestDetailsPage', segment: 'request-details', priority: 'low', defaultHistory: [] },
-                        { loadChildren: '../pages/payment/payment.module#PaymentPageModule', name: 'PaymentPage', segment: 'payment', priority: 'low', defaultHistory: [] },
-                        { loadChildren: '../pages/tabs/tabs.module#TabsPageModule', name: 'TabsPage', segment: 'tabs', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/request/request.module#RequestPageModule', name: 'RequestPage', segment: 'request', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/signup/signup.module#SignupPageModule', name: 'SignupPage', segment: 'signup', priority: 'low', defaultHistory: [] },
-                        { loadChildren: '../pages/request/request.module#RequestPageModule', name: 'RequestPage', segment: 'request', priority: 'low', defaultHistory: [] }
+                        { loadChildren: '../pages/tabs/tabs.module#TabsPageModule', name: 'TabsPage', segment: 'tabs', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/group-items/group-items.module#GroupItemsPageModule', name: 'GroupItemsPage', segment: 'group-items', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/group-members/group-members.module#GroupMembersPageModule', name: 'GroupMembersPage', segment: 'group-members', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/group-account/group-account.module#GroupAccountPageModule', name: 'GroupAccountPage', segment: 'group-account', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/group-payment/group-payment.module#GroupPaymentPageModule', name: 'GroupPaymentPage', segment: 'group-payment', priority: 'low', defaultHistory: [] }
                     ]
                 }),
                 __WEBPACK_IMPORTED_MODULE_7__angular_common_http__["b" /* HttpClientModule */]

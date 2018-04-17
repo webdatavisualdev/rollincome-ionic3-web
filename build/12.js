@@ -1,14 +1,14 @@
 webpackJsonp([12],{
 
-/***/ 333:
+/***/ 364:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CheckEmailPageModule", function() { return CheckEmailPageModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GroupMembersPageModule", function() { return GroupMembersPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(57);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__check_email__ = __webpack_require__(349);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__group_members__ = __webpack_require__(365);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -18,35 +18,36 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var CheckEmailPageModule = /** @class */ (function () {
-    function CheckEmailPageModule() {
+var GroupMembersPageModule = /** @class */ (function () {
+    function GroupMembersPageModule() {
     }
-    CheckEmailPageModule = __decorate([
+    GroupMembersPageModule = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["I" /* NgModule */])({
             declarations: [
-                __WEBPACK_IMPORTED_MODULE_2__check_email__["a" /* CheckEmailPage */],
+                __WEBPACK_IMPORTED_MODULE_2__group_members__["a" /* GroupMembersPage */],
             ],
             imports: [
-                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__check_email__["a" /* CheckEmailPage */]),
+                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__group_members__["a" /* GroupMembersPage */]),
             ],
         })
-    ], CheckEmailPageModule);
-    return CheckEmailPageModule;
+    ], GroupMembersPageModule);
+    return GroupMembersPageModule;
 }());
 
-//# sourceMappingURL=check-email.module.js.map
+//# sourceMappingURL=group-members.module.js.map
 
 /***/ }),
 
-/***/ 349:
+/***/ 365:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CheckEmailPage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return GroupMembersPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(57);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_auth_auth__ = __webpack_require__(224);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_api_api__ = __webpack_require__(223);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_loading_loading__ = __webpack_require__(222);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_auth_auth__ = __webpack_require__(224);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -60,43 +61,37 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-var CheckEmailPage = /** @class */ (function () {
-    function CheckEmailPage(navCtrl, navParams, auth, loading) {
+
+var GroupMembersPage = /** @class */ (function () {
+    function GroupMembersPage(navCtrl, navParams, api, loading, auth) {
+        var _this = this;
         this.navCtrl = navCtrl;
         this.navParams = navParams;
-        this.auth = auth;
+        this.api = api;
         this.loading = loading;
-        this.code = '';
-    }
-    CheckEmailPage.prototype.ionViewDidLoad = function () {
-        console.log('ionViewDidLoad CheckEmailPage');
-    };
-    CheckEmailPage.prototype.validate = function () {
-        var _this = this;
-        this.loading.show('validate');
-        this.auth.validate({
-            email: this.navParams.data.email,
-            validation_code: this.code
-        }).subscribe(function (res) {
-            _this.loading.dismiss('validate');
-            if (res.email_validated === 'yes') {
-                _this.navCtrl.setRoot('LoginPage');
-            }
+        this.auth = auth;
+        this.members = [];
+        this.loading.show('getGroupMembers');
+        this.api.getGroupMembers({ group_id: this.navParams.data.id, user_id: this.auth.user.id }).subscribe(function (res) {
+            _this.members = res.data;
+            console.log(_this.members);
+            _this.loading.dismiss('getGroupMembers');
         });
+    }
+    GroupMembersPage.prototype.ionViewDidLoad = function () {
+        console.log('ionViewDidLoad GroupMembersPage');
     };
-    CheckEmailPage = __decorate([
+    GroupMembersPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-check-email',template:/*ion-inline-start:"/Volumes/data/git-projects/rollincome-ionic3/src/pages/check-email/check-email.html"*/'<ion-header>\n\n  <ion-navbar>\n    <ion-title>Check Email</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content>\n  <ion-list inset>\n    <p>Please check your email and enter code here.</p>\n    <ion-item>\n      <ion-icon name="ios-lock" item-start></ion-icon>\n      <ion-input [(ngModel)]="code"  placeholder="Enter code" type="text" value="" autocapitalize="off"></ion-input>\n    </ion-item>\n  </ion-list>\n\n  <div padding>\n    <button [disabled]="code == \'\'" type="button" ion-button color="secondary" block (click)="validate()">Validate Code</button>\n  </div>\n</ion-content>\n'/*ion-inline-end:"/Volumes/data/git-projects/rollincome-ionic3/src/pages/check-email/check-email.html"*/,
+            selector: 'page-group-members',template:/*ion-inline-start:"/Volumes/data/git-projects/rollincome-ionic3/src/pages/group-members/group-members.html"*/'<ion-header>\n\n  <ion-navbar>\n    <ion-title>group-members</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content>\n  <ion-list>\n    <ion-item detail-push *ngFor="let m of members">\n      <span>{{m}}</span>\n    </ion-item>\n  </ion-list>\n</ion-content>\n'/*ion-inline-end:"/Volumes/data/git-projects/rollincome-ionic3/src/pages/group-members/group-members.html"*/,
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavParams */],
-            __WEBPACK_IMPORTED_MODULE_2__providers_auth_auth__["a" /* AuthProvider */],
-            __WEBPACK_IMPORTED_MODULE_3__providers_loading_loading__["a" /* LoadingProvider */]])
-    ], CheckEmailPage);
-    return CheckEmailPage;
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavParams */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__providers_api_api__["a" /* ApiProvider */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__providers_api_api__["a" /* ApiProvider */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_3__providers_loading_loading__["a" /* LoadingProvider */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__providers_loading_loading__["a" /* LoadingProvider */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_4__providers_auth_auth__["a" /* AuthProvider */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__providers_auth_auth__["a" /* AuthProvider */]) === "function" && _e || Object])
+    ], GroupMembersPage);
+    return GroupMembersPage;
+    var _a, _b, _c, _d, _e;
 }());
 
-//# sourceMappingURL=check-email.js.map
+//# sourceMappingURL=group-members.js.map
 
 /***/ })
 

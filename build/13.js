@@ -1,14 +1,14 @@
 webpackJsonp([13],{
 
-/***/ 332:
+/***/ 362:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ChatPageModule", function() { return ChatPageModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GroupItemsPageModule", function() { return GroupItemsPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(57);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__chat__ = __webpack_require__(348);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__group_items__ = __webpack_require__(363);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -18,35 +18,34 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var ChatPageModule = /** @class */ (function () {
-    function ChatPageModule() {
+var GroupItemsPageModule = /** @class */ (function () {
+    function GroupItemsPageModule() {
     }
-    ChatPageModule = __decorate([
+    GroupItemsPageModule = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["I" /* NgModule */])({
             declarations: [
-                __WEBPACK_IMPORTED_MODULE_2__chat__["a" /* ChatPage */],
+                __WEBPACK_IMPORTED_MODULE_2__group_items__["a" /* GroupItemsPage */],
             ],
             imports: [
-                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__chat__["a" /* ChatPage */]),
+                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__group_items__["a" /* GroupItemsPage */]),
             ],
         })
-    ], ChatPageModule);
-    return ChatPageModule;
+    ], GroupItemsPageModule);
+    return GroupItemsPageModule;
 }());
 
-//# sourceMappingURL=chat.module.js.map
+//# sourceMappingURL=group-items.module.js.map
 
 /***/ }),
 
-/***/ 348:
+/***/ 363:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ChatPage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return GroupItemsPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(57);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_api_api__ = __webpack_require__(223);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_loading_loading__ = __webpack_require__(222);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_auth_auth__ = __webpack_require__(224);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -59,43 +58,37 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-
-var ChatPage = /** @class */ (function () {
-    function ChatPage(navCtrl, navParams, api, loading) {
-        var _this = this;
+var GroupItemsPage = /** @class */ (function () {
+    function GroupItemsPage(navCtrl, navParams, auth) {
         this.navCtrl = navCtrl;
         this.navParams = navParams;
-        this.api = api;
-        this.loading = loading;
-        this.rooms = [];
-        this.loading.show('getChatrooms');
-        this.api.getChatrooms().subscribe(function (res) {
-            _this.rooms = res.data;
-            _this.loading.dismiss('getChatrooms');
-        });
+        this.auth = auth;
+        this.group = this.navParams.data;
+        console.log(this.group, this.auth.user);
     }
-    ChatPage.prototype.ionViewDidLoad = function () {
+    GroupItemsPage.prototype.ionViewDidLoad = function () {
+        console.log('ionViewDidLoad GroupItemsPage');
     };
-    ChatPage.prototype.getItems = function (event) {
+    GroupItemsPage.prototype.goGroupMembers = function () {
+        this.navCtrl.setRoot('GroupMembersPage', this.group);
     };
-    ChatPage.prototype.onCancel = function (event) {
+    GroupItemsPage.prototype.goGroupAccount = function () {
+        this.navCtrl.setRoot('GroupAccountPage', this.group);
     };
-    ChatPage.prototype.goMessages = function (id) {
-        this.navCtrl.setRoot('ChatMessagesPage', { id: id });
+    GroupItemsPage.prototype.goGroupPayment = function () {
+        this.navCtrl.setRoot('GroupPaymentPage', this.group);
     };
-    ChatPage = __decorate([
+    GroupItemsPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-chat',template:/*ion-inline-start:"/Volumes/data/git-projects/rollincome-ionic3/src/pages/chat/chat.html"*/'\n<ion-header>\n\n  <ion-navbar color="secondary">\n    <ion-title>Chat</ion-title>\n  </ion-navbar>\n\n  <ion-toolbar>\n    <ion-searchbar #searchBar\n    [showCancelButton]="false"\n    (input)="getItems($event)"\n    (ionCancel)="onCancel($event)"\n    (ionClear)="onCancel($event)"\n    placeholder="Search">\n    </ion-searchbar>\n  </ion-toolbar>\n</ion-header>\n\n<ion-content>\n  <ion-list>\n    <ion-item detail-push *ngFor="let r of rooms" (click)="goMessages(r.id)">\n      <span>{{r.name}}</span>\n    </ion-item>\n  </ion-list>\n</ion-content>\n'/*ion-inline-end:"/Volumes/data/git-projects/rollincome-ionic3/src/pages/chat/chat.html"*/,
+            selector: 'page-group-items',template:/*ion-inline-start:"/Volumes/data/git-projects/rollincome-ionic3/src/pages/group-items/group-items.html"*/'<ion-header>\n\n  <ion-navbar color="secondary">\n    <ion-buttons start>\n      <button ion-button small (click)="goRoomList()">\n        <ion-icon name="arrow-back"></ion-icon>\n        Back to group\n      </button>\n    </ion-buttons>\n  </ion-navbar>\n\n  <ion-toolbar>\n    <ion-title>Group: {{group.name}}</ion-title>\n  </ion-toolbar>\n</ion-header>\n\n\n<ion-content>\n  <ion-list>\n    <ion-item detail-push (click)="goGroupMembers()">\n      <span>Members</span>\n      <span *ngIf="group.nb_members">{{group.nb_members}}</span>\n    </ion-item>\n    <ion-item detail-push (click)="goGroupAccount()">\n      <span>Account</span>\n    </ion-item>\n    <ion-item detail-push (click)="goGroupPayment()">\n      <span>Payment means</span>\n    </ion-item>\n  </ion-list>\n</ion-content>\n'/*ion-inline-end:"/Volumes/data/git-projects/rollincome-ionic3/src/pages/group-items/group-items.html"*/,
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavParams */],
-            __WEBPACK_IMPORTED_MODULE_2__providers_api_api__["a" /* ApiProvider */],
-            __WEBPACK_IMPORTED_MODULE_3__providers_loading_loading__["a" /* LoadingProvider */]])
-    ], ChatPage);
-    return ChatPage;
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavParams */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__providers_auth_auth__["a" /* AuthProvider */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__providers_auth_auth__["a" /* AuthProvider */]) === "function" && _c || Object])
+    ], GroupItemsPage);
+    return GroupItemsPage;
+    var _a, _b, _c;
 }());
 
-//# sourceMappingURL=chat.js.map
+//# sourceMappingURL=group-items.js.map
 
 /***/ })
 
